@@ -16,6 +16,16 @@
 <body>
 
     <div class=" h-screen w-screen flex flex-col justify-center items-center bg-[#121212]">
+        <div class="absolute top-4 text-white flex text-lg justify-center items-center">
+            <span id="digHour">12</span>
+            <span>:</span>
+            <span id="digMin">24</span>
+            <span id="amOrPm" class="uppercase ml-2">pm</span>
+            <div class="flex">
+                <img class="h-12 w-12" id="morning" src="https://img.icons8.com/?size=100&id=WthylEaM51Fy&format=png&color=000000" alt="morning">
+                <img class="h-12 w-12" id="night" src="https://img.icons8.com/?size=100&id=15348&format=png&color=000000" alt="night">
+            </div>
+        </div>
         <div class="h-[300px] border border-white w-[300px] rounded-full relative">
             <div id="hour" class="absolute top-1/2 left-1/2 text-[#bf212f] origin-left text-sm">
                 <span>12</span>
@@ -63,18 +73,31 @@
         let hour = time.getHours(); // 0-23
         let min = time.getMinutes(); // 0-59
         let sec = time.getSeconds(); //0-59
-
+        
+        let timeOfDay = (hour>=0 && hour<=5) ? "night" : "morning"
+        let amOrPm = (hour>=0 && hour<=11) ? "am" : "pm"
         hour = hour>=12 ? hour-12 : hour
 
         document.querySelector("#hour").style.transform=`rotate(${-90+(hour)*30 +Math.round(min/2)}deg)` 
         document.querySelectorAll("#hour span").forEach((elem)=>elem.textContent = hour);
+        document.querySelector("#digHour").textContent = hour>10 ? hour : "0"+hour
 
         document.querySelector("#minutes").style.transform=`rotate(${-90+(min)*6+Math.round(sec/10)}deg)`
         document.querySelectorAll("#minutes span").forEach((elem)=>elem.textContent=min);
+        document.querySelector("#digMin").textContent = min>10 ? min : "0"+min
 
         document.querySelector("#seconds").style.transform=`rotate(${-90+(sec)*6}deg)` 
         document.querySelectorAll("#seconds span").forEach(elem=>elem.textContent=sec);
+
+        if(timeOfDay=="night"){
+            document.querySelector("#night").style.display="block"
+            document.querySelector("#morning").style.display="none"
+        }else{
+            document.querySelector("#night").style.display="none"
+             document.querySelector("#morning").style.display="block"
         }
+        document.querySelector("#amOrPm").textContent=amOrPm
+    }
 
         setInterval(getUpdatedTime,1000);
     </script>
